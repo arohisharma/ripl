@@ -54,7 +54,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-06 13:37:20.303934",
+ "modified": "2026-05-07 22:25:33.146362",
  "modified_by": "Administrator",
  "module": "ripl",
  "name": "Chapter",
@@ -77,5 +77,6 @@
  "rows_threshold_for_grid_search": 20,
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": []
+ "states": [],
+ "title_field": "title"
 }

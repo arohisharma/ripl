@@ -1,0 +1,176 @@
+{
+ "charts": [],
+ "content": "[{\"id\":\"XIrjqCKWve\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><i>Feed &amp; Explore</i></span>\",\"col\":12}},{\"id\":\"gSYqsxD3Na\",\"type\":\"card\",\"data\":{\"card_name\":\"Feed\",\"col\":4}},{\"id\":\"R9303QxyXg\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"psFBdR8TLh\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><i>Playbook Management</i></span>\",\"col\":12}},{\"id\":\"MAPjT17PtQ\",\"type\":\"card\",\"data\":{\"card_name\":\"Playbooks\",\"col\":4}},{\"id\":\"dDjIn12c7W\",\"type\":\"card\",\"data\":{\"card_name\":\"Modules\",\"col\":4}},{\"id\":\"hA67jj-bbm\",\"type\":\"card\",\"data\":{\"card_name\":\"Content\",\"col\":4}}]",
+ "creation": "2026-05-07 23:40:41.315063",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "solid-success",
+ "idx": 0,
+ "indicator_color": "",
+ "is_hidden": 0,
+ "label": "Playbook Dashboard",
+ "links": [
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Feed",
+   "link_count": 2,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Add new post",
+   "link_count": 0,
+   "link_to": "Post",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "view all posts",
+   "link_count": 0,
+   "link_to": "Post",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Playbooks",
+   "link_count": 3,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Add new playbook",
+   "link_count": 0,
+   "link_to": "Playbook",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "View all playbook",
+   "link_count": 0,
+   "link_to": "Playbook",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Purchase playbook",
+   "link_count": 0,
+   "link_to": "Playbook Purchase",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Modules",
+   "link_count": 2,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Add new module",
+   "link_count": 0,
+   "link_to": "Module",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "View all modules",
+   "link_count": 0,
+   "link_to": "Module",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Content",
+   "link_count": 4,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Add/ view chapters",
+   "link_count": 0,
+   "link_to": "Chapter",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Add/ view quizes",
+   "link_count": 0,
+   "link_to": "Quiz",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Add/ view questions",
+   "link_count": 0,
+   "link_to": "Question",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Add/ view options",
+   "link_count": 0,
+   "link_to": "Option",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  }
+ ],
+ "modified": "2026-05-09 23:44:08.748346",
+ "modified_by": "Administrator",
+ "module": "ripl",
+ "name": "Playbook Dashboard",
+ "number_cards": [],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [],
+ "roles": [],
+ "sequence_id": 0.0,
+ "shortcuts": [],
+ "title": "Playbook Dashboard"
+}

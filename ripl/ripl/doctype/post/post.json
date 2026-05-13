@@ -1,0 +1,148 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2026-05-09 17:19:59.469140",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "title",
+  "circular_number",
+  "regulator",
+  "summary",
+  "show_impacted_entities",
+  "impacted_entities",
+  "image_url",
+  "status",
+  "column_break_wdos",
+  "date",
+  "circular_url",
+  "category",
+  "key_points",
+  "show_action_steps",
+  "action_steps",
+  "circular_pdf"
+ ],
+ "fields": [
+  {
+   "fieldname": "title",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Title",
+   "reqd": 1
+  },
+  {
+   "fieldname": "circular_number",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Circular Number",
+   "reqd": 1
+  },
+  {
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "regulator",
+   "fieldtype": "Data",
+   "label": "Regulator",
+   "reqd": 1
+  },
+  {
+   "fieldname": "category",
+   "fieldtype": "Data",
+   "label": "Category"
+  },
+  {
+   "fieldname": "summary",
+   "fieldtype": "Text Editor",
+   "in_list_view": 1,
+   "label": "Summary",
+   "reqd": 1
+  },
+  {
+   "fieldname": "key_points",
+   "fieldtype": "Text Editor",
+   "label": "Key Points",
+   "reqd": 1
+  },
+  {
+   "default": "1",
+   "fieldname": "show_impacted_entities",
+   "fieldtype": "Check",
+   "label": "Show Impacted Entities"
+  },
+  {
+   "default": "1",
+   "fieldname": "show_action_steps",
+   "fieldtype": "Check",
+   "label": "Show Action Steps"
+  },
+  {
+   "fieldname": "impacted_entities",
+   "fieldtype": "Text Editor",
+   "label": "Impacted Entities"
+  },
+  {
+   "fieldname": "action_steps",
+   "fieldtype": "Text Editor",
+   "label": "Action Steps"
+  },
+  {
+   "fieldname": "circular_pdf",
+   "fieldtype": "Attach",
+   "label": "Circular PDF"
+  },
+  {
+   "fieldname": "image_url",
+   "fieldtype": "Attach Image",
+   "label": "Cover Image"
+  },
+  {
+   "fieldname": "column_break_wdos",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Published",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Draft\nPublished\nArchived"
+  },
+  {
+   "fieldname": "circular_url",
+   "fieldtype": "Data",
+   "label": "Circular Url"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-05-11 15:01:48.706478",
+ "modified_by": "Administrator",
+ "module": "ripl",
+ "name": "Post",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "title"
+}

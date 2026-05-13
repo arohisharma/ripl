@@ -8,13 +8,12 @@
   "title",
   "subtitle",
   "description",
+  "learning_points",
+  "designed_for",
   "section_break_vnpq",
-  "category",
-  "difficulty",
   "duration_hours",
   "price",
   "rating",
-  "total_chapters",
   "thumbnail",
   "is_active"
  ],
@@ -34,23 +33,11 @@
   {
    "fieldname": "description",
    "fieldtype": "Text Editor",
-   "label": "Description"
+   "label": "Curriculum Roadmap"
   },
   {
    "fieldname": "section_break_vnpq",
    "fieldtype": "Section Break"
-  },
-  {
-   "fieldname": "category",
-   "fieldtype": "Select",
-   "label": "Category",
-   "options": "All\nRBI / Forex\nMCA / Corporate\nRBI / Fintech"
-  },
-  {
-   "fieldname": "difficulty",
-   "fieldtype": "Select",
-   "label": "Difficulty",
-   "options": "Beginner\nIntermediate\nAdvanced"
   },
   {
    "fieldname": "duration_hours",
@@ -65,12 +52,8 @@
   {
    "fieldname": "rating",
    "fieldtype": "Float",
+   "hidden": 1,
    "label": "Rating"
-  },
-  {
-   "fieldname": "total_chapters",
-   "fieldtype": "Int",
-   "label": "Total Chapters"
   },
   {
    "fieldname": "thumbnail",
@@ -82,12 +65,22 @@
    "fieldname": "is_active",
    "fieldtype": "Check",
    "label": "Active"
+  },
+  {
+   "fieldname": "learning_points",
+   "fieldtype": "Text Editor",
+   "label": "What you will learn"
+  },
+  {
+   "fieldname": "designed_for",
+   "fieldtype": "Text Editor",
+   "label": "Curriculum designed for"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-06 13:07:57.509189",
+ "modified": "2026-05-13 13:17:18.073222",
  "modified_by": "Administrator",
  "module": "ripl",
  "name": "Playbook",
@@ -110,5 +103,6 @@
  "rows_threshold_for_grid_search": 20,
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": []
+ "states": [],
+ "title_field": "title"
 }

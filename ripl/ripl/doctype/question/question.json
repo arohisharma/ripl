@@ -8,6 +8,7 @@
   "quiz",
   "question_text",
   "explanation",
+  "practitioner_insight",
   "order"
  ],
  "fields": [
@@ -38,12 +39,17 @@
    "label": "Order",
    "non_negative": 1,
    "search_index": 1
+  },
+  {
+   "fieldname": "practitioner_insight",
+   "fieldtype": "Text Editor",
+   "label": "Practitioner insight"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-06 13:37:38.303958",
+ "modified": "2026-05-07 22:43:47.251081",
  "modified_by": "Administrator",
  "module": "ripl",
  "name": "Question",
@@ -66,5 +72,6 @@
  "rows_threshold_for_grid_search": 20,
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": []
+ "states": [],
+ "title_field": "question_text"
 }
