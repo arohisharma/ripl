@@ -13,8 +13,11 @@
   "section_break_vnpq",
   "duration_hours",
   "price",
-  "rating",
+  "total_modules",
+  "total_questions",
+  "total_quizzes",
   "thumbnail",
+  "rating",
   "is_active"
  ],
  "fields": [
@@ -75,12 +78,33 @@
    "fieldname": "designed_for",
    "fieldtype": "Text Editor",
    "label": "Curriculum designed for"
+  },
+  {
+   "fieldname": "total_modules",
+   "fieldtype": "Int",
+   "label": "Total Modules",
+   "non_negative": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "total_questions",
+   "fieldtype": "Int",
+   "label": "Total Questions (to be shown in UI as x+)",
+   "non_negative": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "total_quizzes",
+   "fieldtype": "Int",
+   "label": "Total Quizzes",
+   "non_negative": 1,
+   "reqd": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-13 13:17:18.073222",
+ "modified": "2026-05-15 12:02:37.163185",
  "modified_by": "Administrator",
  "module": "ripl",
  "name": "Playbook",

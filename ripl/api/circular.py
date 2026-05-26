@@ -6,6 +6,7 @@ import tempfile
 from frappe.utils.file_manager import save_file
 import pdfplumber
 from ripl.ripl.doctype.circular.circular import download_pdf, extract_pdf_text
+from ripl.api.auth import auth_required
 
 
 def _handle_unexpected_error(context):
@@ -141,7 +142,8 @@ def get_latest_circulars(limit=5):
         _handle_unexpected_error("get_latest_circulars")
 
 @frappe.whitelist()
-def enqueue_ai_generation(name):
+@auth_required
+def enqueue_ai_generation(name, user=None):
     """
     frappe.enqueue(
         "ripl.api.circular.generate_ai_data",
@@ -153,7 +155,8 @@ def enqueue_ai_generation(name):
     return {"status": "disabled"}
 
 @frappe.whitelist()
-def generate_ai_data(name):
+@auth_required
+def generate_ai_data(name, user=None):
     doc = frappe.get_doc("Circular", name)
 
     if not doc.circular_file:

@@ -1,11 +1,13 @@
 import frappe
 from frappe import _
+from ripl.api.auth import auth_required
 
 # -------------------------
 # CREATE POST
 # -------------------------
 @frappe.whitelist()
-def create_post(data):
+@auth_required
+def create_post(data, user=None):
     """
     Create a new Post
     """
@@ -44,7 +46,8 @@ def create_post(data):
 # GET LIST (FEED)
 # -------------------------
 @frappe.whitelist()
-def get_posts(limit=10, offset=0):
+@auth_required
+def get_posts(limit=10, offset=0, user=None):
     posts = frappe.get_all(
         "Post",
         fields=[
@@ -67,7 +70,8 @@ def get_posts(limit=10, offset=0):
 # GET SINGLE POST DETAIL
 # -------------------------
 @frappe.whitelist()
-def get_post_detail(name):
+@auth_required
+def get_post_detail(name, user=None):
     doc = frappe.get_doc("Post", name)
 
     return {
@@ -92,7 +96,8 @@ def get_post_detail(name):
 # DELETE POST (OPTIONAL)
 # -------------------------
 @frappe.whitelist()
-def delete_post(name):
+@auth_required
+def delete_post(name, user=None):
     frappe.delete_doc("Post", name, ignore_permissions=True)
     frappe.db.commit()
 

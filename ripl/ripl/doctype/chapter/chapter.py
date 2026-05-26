@@ -1,9 +1,12 @@
 # Copyright (c) 2026, dewansh and contributors
 # For license information, please see license.txt
 
-# import frappe
 from frappe.model.document import Document
+
+from ripl.utils.html_content import extract_text_editor_images, publish_private_images_in_html
 
 
 class Chapter(Document):
-	pass
+	def before_save(self):
+		extract_text_editor_images(self, "content")
+		publish_private_images_in_html(self, "content")

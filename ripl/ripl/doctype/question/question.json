@@ -9,7 +9,8 @@
   "question_text",
   "explanation",
   "practitioner_insight",
-  "order"
+  "order",
+  "options"
  ],
  "fields": [
   {
@@ -44,12 +45,18 @@
    "fieldname": "practitioner_insight",
    "fieldtype": "Text Editor",
    "label": "Practitioner insight"
+  },
+  {
+   "fieldname": "options",
+   "fieldtype": "Table",
+   "label": "Options",
+   "options": "Option"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-07 22:43:47.251081",
+ "modified": "2026-05-14 19:39:32.160262",
  "modified_by": "Administrator",
  "module": "ripl",
  "name": "Question",
