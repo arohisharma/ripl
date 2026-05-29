@@ -9,7 +9,9 @@
   "title",
   "content",
   "order",
-  "read_time_mins"
+  "read_time_mins",
+  "bonus_title",
+  "bonus_body"
  ],
  "fields": [
   {
@@ -49,12 +51,23 @@
    "fieldtype": "Int",
    "label": "Reading Time",
    "non_negative": 1
+  },
+  {
+   "fieldname": "bonus_title",
+   "fieldtype": "Small Text",
+   "label": "Bonus Title"
+  },
+  {
+   "fieldname": "bonus_body",
+   "fieldtype": "Text Editor",
+   "label": "Bonus Body"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-07 22:25:33.146362",
+ "make_attachments_public": 1,
+ "modified": "2026-05-29 13:42:39.286339",
  "modified_by": "Administrator",
  "module": "ripl",
  "name": "Chapter",
@@ -73,7 +86,6 @@
    "write": 1
   }
  ],
- "make_attachments_public": 1,
  "row_format": "Dynamic",
  "rows_threshold_for_grid_search": 20,
  "sort_field": "modified",
