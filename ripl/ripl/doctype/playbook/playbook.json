@@ -10,14 +10,16 @@
   "description",
   "learning_points",
   "designed_for",
+  "references",
   "section_break_vnpq",
   "duration_hours",
-  "price",
   "total_modules",
   "total_questions",
-  "total_quizzes",
-  "thumbnail",
   "rating",
+  "column_break_sugu",
+  "price",
+  "thumbnail",
+  "total_quizzes",
   "is_active"
  ],
  "fields": [
@@ -77,7 +79,7 @@
   {
    "fieldname": "designed_for",
    "fieldtype": "Text Editor",
-   "label": "Curriculum designed for"
+   "label": "Curriculum Designed for"
   },
   {
    "fieldname": "total_modules",
@@ -99,12 +101,21 @@
    "label": "Total Quizzes",
    "non_negative": 1,
    "reqd": 1
+  },
+  {
+   "fieldname": "column_break_sugu",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "references",
+   "fieldtype": "Text Editor",
+   "label": "Appendix References Authorities"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-15 12:02:37.163185",
+ "modified": "2026-06-01 13:55:57.785458",
  "modified_by": "Administrator",
  "module": "ripl",
  "name": "Playbook",

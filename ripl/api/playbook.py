@@ -134,8 +134,9 @@ def get_playbook_detail(playbook_id, user=None):
         "price": pb.price,
         "is_purchased": bool(check_purchase(user, pb.name)),
 
-        # ✅ module preview
-        "description": pb.description
+        # ✅ module previews
+        "description": pb.description,
+        "references": pb.references
     }
 
     return result
