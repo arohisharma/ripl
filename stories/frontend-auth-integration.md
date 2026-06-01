@@ -167,7 +167,21 @@ const payload = json.message; // ← tokens live here
 
 **Rate limit errors:** `ValidationError` with message e.g. “Please wait N seconds…” or “Maximum OTP requests reached…”
 
-**Dev mode extra fields** (when `developer_mode` is on and identifier is the dev test email):
+**Dev / staging extra fields** (when staging auth is enabled — see [STAGING_OTP_RUNBOOK.md](../docs/STAGING_OTP_RUNBOOK.md)):
+
+With `ripl_staging_auth` + `ripl_expose_otp_in_response` on the site (staging only):
+
+```json
+{
+  "success": true,
+  "message": "OTP sent",
+  "dev_mode": true,
+  "dev_test_otp": "482917",
+  "expires_in_seconds": 300
+}
+```
+
+With `developer_mode` and the dev test email (`test@ripl.dev` by default):
 
 ```json
 {
@@ -179,7 +193,19 @@ const payload = json.message; // ← tokens live here
 }
 ```
 
-OTP is valid for **5 minutes**. SMS/email delivery is **not** live yet — for non-dev emails, OTP must be obtained from backend logs during development.
+**Where to read OTP on staging**
+
+| Method | Location |
+|--------|----------|
+| API | `message.dev_test_otp` when `ripl_expose_otp_in_response` is on |
+| Desk | **Error Log** → search `RIPL OTP` (when `ripl_log_otp_to_error_log` or `developer_mode`) |
+| Test account | `test@ripl.dev` / `123456` when staging auth is enabled |
+
+**Production:** set `ripl_production: 1`. No OTP in response or Error Log.
+
+Identifiers are normalized (email lowercased; phone digits only) — use the same identifier for send and verify.
+
+SMS/email delivery is **not** live yet — use staging flags above until delivery ships.
 
 ---
 

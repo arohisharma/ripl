@@ -8,6 +8,7 @@ from ripl.utils.dev_auth import (
 	is_dev_test_identifier,
 	is_dev_test_login,
 )
+from ripl.utils.identifier import normalize_identifier, otp_cache_key
 from ripl.utils.log import log_error_event, log_event, mask_identifier
 from ripl.utils.otp_rate_limit import (
 	OTP_EXPIRY_SECONDS,
@@ -15,10 +16,12 @@ from ripl.utils.otp_rate_limit import (
 	coerce_bool,
 	record_send,
 )
+from ripl.utils.staging_auth import log_otp_to_error_log, staging_otp_response_fields
 from ripl.utils.token import create_tokens
 
 
 def send_otp(identifier: str, is_resend: bool | str | int | None = False) -> dict:
+	identifier = normalize_identifier(identifier)
 	client_is_resend = coerce_bool(is_resend)
 	log_event(
 		"send_otp.start",
@@ -32,7 +35,8 @@ def send_otp(identifier: str, is_resend: bool | str | int | None = False) -> dic
 			frappe.throw("Email or phone required")
 
 		rate_meta = check_send_allowed(identifier)
-		had_existing_otp = bool(frappe.cache().get_value(f"otp_{identifier}"))
+		cache_key = otp_cache_key(identifier)
+		had_existing_otp = bool(frappe.cache().get_value(cache_key, expires=True))
 
 		if is_dev_test_identifier(identifier):
 			otp = get_dev_test_otp()
@@ -48,7 +52,8 @@ def send_otp(identifier: str, is_resend: bool | str | int | None = False) -> dic
 			else:
 				log_event("send_otp.otp_cached", identifier=mask_identifier(identifier))
 
-		frappe.cache().set_value(f"otp_{identifier}", otp, expires_in_sec=OTP_EXPIRY_SECONDS)
+		frappe.cache().set_value(cache_key, otp, expires_in_sec=OTP_EXPIRY_SECONDS)
+		log_otp_to_error_log(otp, identifier, OTP_EXPIRY_SECONDS)
 
 		send_meta = record_send(
 			identifier,
@@ -60,6 +65,7 @@ def send_otp(identifier: str, is_resend: bool | str | int | None = False) -> dic
 			"message": "OTP sent",
 			**rate_meta,
 			**send_meta,
+			**staging_otp_response_fields(otp, OTP_EXPIRY_SECONDS),
 		}
 		dev_meta = dev_auth_metadata()
 		if dev_meta and is_dev_test_identifier(identifier):
@@ -80,10 +86,12 @@ def send_otp(identifier: str, is_resend: bool | str | int | None = False) -> dic
 
 
 def verify_otp(identifier: str, otp: str) -> dict:
+	identifier = normalize_identifier(identifier)
+	otp = str(otp).strip() if otp is not None else ""
 	log_event(
 		"verify_otp.start",
 		identifier=mask_identifier(identifier),
-		otp_length=len(otp) if otp else 0,
+		otp_length=len(otp),
 	)
 
 	try:
@@ -94,8 +102,8 @@ def verify_otp(identifier: str, otp: str) -> dict:
 		if is_dev_test_login(identifier, otp):
 			log_event("verify_otp.dev_bypass", identifier=mask_identifier(identifier))
 		else:
-			cache_key = f"otp_{identifier}"
-			stored_otp = frappe.cache().get_value(cache_key)
+			cache_key = otp_cache_key(identifier)
+			stored_otp = frappe.cache().get_value(cache_key, expires=True)
 
 			if not stored_otp:
 				log_event(
@@ -106,7 +114,7 @@ def verify_otp(identifier: str, otp: str) -> dict:
 				)
 				frappe.throw("OTP expired")
 
-			if stored_otp != otp:
+			if str(stored_otp) != otp:
 				log_event(
 					"verify_otp.failed",
 					level="warning",

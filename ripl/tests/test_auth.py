@@ -9,6 +9,7 @@ from ripl.api.auth import authenticate_request
 from ripl.api.test import get_profile
 from ripl.services import auth_service
 from ripl.utils.otp_rate_limit import COOLDOWN_SECONDS, clear_rate_limit
+from ripl.utils.identifier import normalize_identifier, otp_cache_key
 from ripl.utils.token import create_tokens, decode_token, get_secret_key
 
 
@@ -33,8 +34,9 @@ class TestAuth(FrappeTestCase):
 			frappe.delete_doc("User", self.test_user, force=1)
 
 	def _clear_otp_keys(self, identifier: str):
-		frappe.cache().delete_value(f"otp_{identifier}")
-		clear_rate_limit(identifier)
+		normalized = normalize_identifier(identifier)
+		frappe.cache().delete_value(otp_cache_key(normalized))
+		clear_rate_limit(normalized)
 
 	def _auth_header(self, token: str) -> dict:
 		return {"Authorization": f"Bearer {token}"}
@@ -49,7 +51,7 @@ class TestAuth(FrappeTestCase):
 	def test_verify_otp_issues_tokens(self):
 		identifier = self.test_user
 		otp = "123456"
-		frappe.cache().set_value(f"otp_{identifier}", otp, expires_in_sec=300)
+		frappe.cache().set_value(otp_cache_key(identifier), otp, expires_in_sec=300)
 
 		result = auth_service.verify_otp(identifier, otp)
 		self.assertTrue(result["success"])
@@ -58,7 +60,7 @@ class TestAuth(FrappeTestCase):
 		self.assertTrue(result["refresh_token"])
 
 	def test_verify_otp_rejects_invalid_otp(self):
-		frappe.cache().set_value(f"otp_{self.test_user}", "111111", expires_in_sec=300)
+		frappe.cache().set_value(otp_cache_key(self.test_user), "111111", expires_in_sec=300)
 		with self.assertRaises(frappe.ValidationError):
 			auth_service.verify_otp(self.test_user, "999999")
 
@@ -243,3 +245,110 @@ class TestAuth(FrappeTestCase):
 		with patch("ripl.utils.dev_auth.is_dev_auth_enabled", return_value=False):
 			with self.assertRaises(frappe.ValidationError):
 				auth_service.verify_otp(get_dev_test_email(), get_dev_test_otp())
+
+	def test_verify_otp_normalizes_email_case(self):
+		identifier = f"Case-{frappe.generate_hash(length=6)}@Example.COM"
+		normalized = normalize_identifier(identifier)
+		otp = "654321"
+		frappe.cache().set_value(otp_cache_key(normalized), otp, expires_in_sec=300)
+
+		result = auth_service.verify_otp(identifier.upper(), otp)
+		self.assertTrue(result["success"])
+		self.assertEqual(result["user"], normalized)
+		self._clear_otp_keys(normalized)
+
+	def test_staging_expose_otp_in_response(self):
+		from ripl.utils.dev_auth import get_dev_test_email, get_dev_test_otp
+
+		identifier = get_dev_test_email()
+		self._clear_otp_keys(identifier)
+		staging_conf = {
+			"ripl_staging_auth": 1,
+			"ripl_expose_otp_in_response": 1,
+		}
+
+		with patch.dict(frappe.conf, staging_conf, clear=False):
+			send_result = auth_service.send_otp(identifier)
+			verify_result = auth_service.verify_otp(identifier, get_dev_test_otp())
+
+		self.assertTrue(send_result["success"])
+		self.assertTrue(send_result["dev_mode"])
+		self.assertEqual(send_result["dev_test_otp"], get_dev_test_otp())
+		self.assertTrue(verify_result["success"])
+		self.assertTrue(verify_result["access_token"])
+		self._clear_otp_keys(identifier)
+
+	def test_staging_expose_otp_for_any_identifier(self):
+		identifier = f"qa-{frappe.generate_hash(length=6)}@example.com"
+		self._clear_otp_keys(identifier)
+		otp = "482917"
+		staging_conf = {
+			"ripl_staging_auth": 1,
+			"ripl_expose_otp_in_response": 1,
+		}
+
+		with patch.dict(frappe.conf, staging_conf, clear=False):
+			with patch("random.randint", return_value=int(otp)):
+				send_result = auth_service.send_otp(identifier)
+			verify_result = auth_service.verify_otp(identifier, otp)
+
+		self.assertEqual(send_result["dev_test_otp"], otp)
+		self.assertTrue(send_result["dev_mode"])
+		self.assertTrue(verify_result["success"])
+		self._clear_otp_keys(identifier)
+
+	def test_staging_logs_otp_to_error_log(self):
+		identifier = f"qa-log-{frappe.generate_hash(length=6)}@example.com"
+		self._clear_otp_keys(identifier)
+		staging_conf = {
+			"ripl_staging_auth": 1,
+			"ripl_log_otp_to_error_log": 1,
+		}
+
+		with patch.dict(frappe.conf, staging_conf, clear=False):
+			with patch("random.randint", return_value=111222):
+				with patch("frappe.log_error") as mock_log_error:
+					auth_service.send_otp(identifier)
+
+		mock_log_error.assert_called_once()
+		title = mock_log_error.call_args.kwargs["title"]
+		message = mock_log_error.call_args.kwargs["message"]
+		self.assertIn("RIPL OTP", title)
+		self.assertIn("111222", message)
+		self._clear_otp_keys(identifier)
+
+	def test_production_never_exposes_or_logs_otp(self):
+		identifier = f"prod-{frappe.generate_hash(length=6)}@example.com"
+		self._clear_otp_keys(identifier)
+		prod_conf = {
+			"ripl_production": 1,
+			"ripl_staging_auth": 1,
+			"ripl_expose_otp_in_response": 1,
+			"ripl_log_otp_to_error_log": 1,
+			"developer_mode": 1,
+		}
+
+		with patch.dict(frappe.conf, prod_conf, clear=False):
+			with patch("random.randint", return_value=999888):
+				with patch("frappe.log_error") as mock_log_error:
+					result = auth_service.send_otp(identifier)
+
+		self.assertNotIn("dev_test_otp", result)
+		self.assertNotIn("dev_mode", result)
+		mock_log_error.assert_not_called()
+		self._clear_otp_keys(identifier)
+
+	def test_staging_dev_test_account_without_developer_mode(self):
+		from ripl.utils.dev_auth import get_dev_test_email, get_dev_test_otp
+
+		identifier = get_dev_test_email()
+		self._clear_otp_keys(identifier)
+		staging_conf = {"ripl_staging_auth": 1, "ripl_expose_otp_in_response": 1}
+
+		with patch.dict(frappe.conf, staging_conf, clear=False):
+			send_result = auth_service.send_otp(identifier)
+			verify_result = auth_service.verify_otp(identifier, get_dev_test_otp())
+
+		self.assertEqual(send_result["dev_test_otp"], get_dev_test_otp())
+		self.assertTrue(verify_result["success"])
+		self._clear_otp_keys(identifier)

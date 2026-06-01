@@ -19,6 +19,11 @@ def coerce_bool(value) -> bool:
 	return False
 
 
+def _format_wait_time(seconds: int) -> str:
+	minutes, secs = divmod(max(0, seconds), 60)
+	return f"{minutes}:{secs:02d} minutes"
+
+
 def _meta_key(identifier: str) -> str:
 	return f"otp_send_meta_{identifier}"
 
@@ -47,7 +52,7 @@ def check_send_allowed(identifier: str) -> dict:
 		if elapsed < COOLDOWN_SECONDS:
 			retry_after = max(1, int(COOLDOWN_SECONDS - elapsed))
 			frappe.throw(
-				_("Please wait {0} seconds before requesting another OTP.").format(retry_after),
+				_("Please wait {0} before requesting another OTP.").format(_format_wait_time(retry_after)),
 				frappe.ValidationError,
 			)
 
@@ -56,7 +61,7 @@ def check_send_allowed(identifier: str) -> dict:
 		window_end = meta.get("window_end")
 		retry_after = max(1, int(float(window_end) - now)) if window_end else HOURLY_WINDOW_SECONDS
 		frappe.throw(
-			_("Maximum OTP requests reached. Try again in {0} seconds.").format(retry_after),
+			_("Maximum OTP requests reached. Try again in {0}.").format(_format_wait_time(retry_after)),
 			frappe.ValidationError,
 		)
 
